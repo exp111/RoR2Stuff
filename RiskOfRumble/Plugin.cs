@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using Buttplug.Client;
@@ -54,7 +54,7 @@ namespace RiskOfRumble
 
         private void ButtplugClient_DeviceAdded(object sender, DeviceAddedEventArgs e)
         {
-            Log.LogMessage($"Device added from RiskOfRumble.ButtplugClient: {e}");
+            DebugLog($"Device added from RiskOfRumble.ButtplugClient: {e}");
         }
 
         private void ButtplugClient_PingTimeout(object sender, EventArgs e)
@@ -99,7 +99,7 @@ namespace RiskOfRumble
             try
             {
                 DebugLog($"Disconnecting");
-                ButtplugClient.DisconnectAsync();
+                ButtplugClient.DisconnectAsync().Wait();
             }
             catch (Exception e)
             {
@@ -123,7 +123,7 @@ namespace RiskOfRumble
                 if (GUILayout.Button("Scan", GUILayout.ExpandWidth(true)))
                 {
                     DebugLog("Scanning");
-                    ButtplugClient.StartScanningAsync();
+                    ButtplugClient.StartScanningAsync().Wait();
                 }
                 if (GUILayout.Button("Disconnect", GUILayout.ExpandWidth(true)))
                 {
@@ -166,7 +166,7 @@ namespace RiskOfRumble
                 // Fade the vibration out
                 foreach (var t in Vibrations)
                 {
-                    t.Intensity = Mathf.Lerp(t.Intensity, 0, 0.5f * deltaTime);
+                    t.Intensity = Mathf.Lerp(t.Intensity, -0.01f, 0.5f * deltaTime);
                 }
 
                 // Remove all done vibrations
