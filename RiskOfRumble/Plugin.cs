@@ -26,6 +26,7 @@ namespace RiskOfRumble
 
         public static ConfigEntry<bool> Rewarding;
         public static ConfigEntry<bool> Punishing;
+        public static ConfigEntry<bool> RoundRobin;
         public static ConfigEntry<float> RewardFactor;
         public static ConfigEntry<float> PunishmentFactor;
 
@@ -76,6 +77,7 @@ namespace RiskOfRumble
 
             Rewarding = Config.Bind("Gameplay", "Rewarding", true, "If rewarding actions (hitting things) should trigger vibrations");
             Punishing = Config.Bind("Gameplay", "Punishing", false, "If punishing actions (getting hit) should trigger vibrations");
+            RoundRobin = Config.Bind("Gameplay", "Round Robin", false, "If you should recieve rewards/punishments from another players actions");
             RewardFactor = Config.Bind("Gameplay", "Reward Factor", 0.5f, "The reward multiplier");
             PunishmentFactor = Config.Bind("Gameplay", "Punishment Factor", 2f, "The punishment multiplier");
         }
@@ -232,7 +234,22 @@ namespace RiskOfRumble
         
         private CharacterMaster GetCharacterMaster()
         {
-            return LocalUserManager.GetFirstLocalUser().currentNetworkUser.master;
+            var playermaster = LocalUserManager.GetFirstLocalUser().currentNetworkUser.master;
+            if (RoundRobin.Value)
+            {
+                // find our player index
+                var playerIndex = 0;
+                foreach (var networkPlayer in PlayerCharacterMasterController.instances)
+                {
+                    if (networkPlayer.master == playermaster)
+                    {
+                        break;
+                    }
+                    playerIndex++;
+                }
+                playermaster = PlayerCharacterMasterController.instances[(playerIndex + 1) % PlayerCharacterMasterController.instances.Count].master;
+            }
+            return playermaster;
         }
 
         private void Punish(DamageDealtMessage obj)
