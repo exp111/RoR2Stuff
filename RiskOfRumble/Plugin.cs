@@ -77,7 +77,7 @@ namespace RiskOfRumble
 
             Rewarding = Config.Bind("Gameplay", "Rewarding", true, "If rewarding actions (hitting things) should trigger vibrations");
             Punishing = Config.Bind("Gameplay", "Punishing", false, "If punishing actions (getting hit) should trigger vibrations");
-            RoundRobin = Config.Bind("Gameplay", "Round Robin", false, "If you should recieve rewards/punishments from another players actions");
+            RoundRobin = Config.Bind("Gameplay", "Round Robin", false, "If you should receive rewards/punishments from another players actions");
             RewardFactor = Config.Bind("Gameplay", "Reward Factor", 0.5f, "The reward multiplier");
             PunishmentFactor = Config.Bind("Gameplay", "Punishment Factor", 2f, "The punishment multiplier");
         }
