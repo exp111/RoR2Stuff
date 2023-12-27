@@ -229,9 +229,15 @@ namespace RiskOfRumble
             }
         }
 
+        
+        private CharacterMaster GetCharacterMaster()
+        {
+            return LocalUserManager.GetFirstLocalUser().currentNetworkUser.master;
+        }
+
         private void Punish(DamageDealtMessage obj)
         {
-            var playermaster = PlayerCharacterMasterController.instances[0].master;
+            var playermaster = GetCharacterMaster();
             if (!playermaster)
             {
                 return;
@@ -255,7 +261,7 @@ namespace RiskOfRumble
 
         private void Reward(DamageDealtMessage obj)
         {
-            var playermaster = PlayerCharacterMasterController.instances[0].master;
+            var playermaster = GetCharacterMaster();
             if (!playermaster)
             {
                 return;
